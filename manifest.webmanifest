@@ -2,9 +2,9 @@
   "name": "OpenRBM – Moderner Rennbahnmanager (Beta)",
   "short_name": "OpenRBM",
   "description": "Moderner Rennbahnmanager für Slotracing (kompatibel mit Bepfe-Elektronik & WinRBM)",
-  "id": "/",
-  "start_url": "/",
-  "scope": "/",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0a0e18",
   "theme_color": "#0a0e18",
@@ -12,19 +12,19 @@
   "categories": ["sports", "utilities"],
   "icons": [
     {
-      "src": "/pwa-192x192.png",
+      "src": "./pwa-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-512x512.png",
+      "src": "./pwa-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/pwa-maskable-512x512.png",
+      "src": "./pwa-maskable-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
