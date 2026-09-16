@@ -14,7 +14,7 @@ Die Anwendung kann direkt im Browser gestartet werden – ohne Installation:
 
 👉 **[OpenRBM im Browser öffnen](https://renes377.github.io/OpenRBM/)**
 
-*(Voraussetzung für die serielle Hardware-Schnittstelle: Google Chrome, Microsoft Edge oder ein anderer Chromium-basierter Browser).*
+*(Voraussetzung für die serielle Hardware-Schnittstelle: Google Chrome, Microsoft Edge oder ein anderer Chromium-basierter Browser). nicht für mobile Geräte geeignet*
 
 ---
 
