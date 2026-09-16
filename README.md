@@ -49,7 +49,7 @@ Dennoch erfolgt die Nutzung, insbesondere die Ansteuerung physischer Bahnstrom-R
 
 OpenRBM ist ein freies Community-Projekt. Wer die Weiterentwicklung und Pflege unterstützen möchte, kann dem Entwickler gerne einen Kaffee spendieren:
 
-👉 [Buy Me a Coffee](https://buymeacoffee.com/)
+👉 [Unterstützung via PayPal (paypal.me/ReneSchildt)](https://paypal.me/ReneSchildt)
 
 ---
 
