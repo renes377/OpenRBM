@@ -51,7 +51,7 @@ self.addEventListener('fetch', (event) => {
           })
           .catch(() => {
             if (event.request.mode === 'navigate') {
-              return caches.match('/index.html')
+              return caches.match('./index.html').then((res) => res || caches.match('./'))
             }
           })
       )
