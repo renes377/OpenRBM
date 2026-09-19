@@ -61,10 +61,7 @@ OpenRBM übernimmt nicht nur alle WinRBM-Funktionen, sondern erweitert sie um za
 
 ### 🛑 4. Spurstrafen direkt im Chaos per Tastatur (`1..8`)
 - Während eines aktiven Chaos kann der Rennleiter mit den Zifferntasten **`1` bis `8`** der jeweiligen Spur direkt eine Einzelspur-Strafe zuweisen oder aberkennen (optische Verursacher-Markierung).
-
-### 🌓 5. Dual-Theme (Dark / Light)
-- Umschaltbar zwischen Dark Mode (optimiert für dunkle Rennräume und Beamer) und Light Mode (ideal für Tageslicht und Auswertungen im Büro).
-
+  
 ---
 
 ## 🛡️ Beta-Hinweis & Haftungsausschluss
