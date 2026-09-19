@@ -62,37 +62,8 @@ OpenRBM übernimmt nicht nur alle WinRBM-Funktionen, sondern erweitert sie um za
 ### 🛑 4. Spurstrafen direkt im Chaos per Tastatur (`1..8`)
 - Während eines aktiven Chaos kann der Rennleiter mit den Zifferntasten **`1` bis `8`** der jeweiligen Spur direkt eine Einzelspur-Strafe zuweisen oder aberkennen (optische Verursacher-Markierung).
 
-### 📊 5. Modernes Live-Scoreboard & Typografie
-- **Letzte 5 Rundenzeiten**: Eigene Spalte mit den letzten 5 Rundenzeiten pro Spur inkl. optischer Bestzeit-Hervorhebung.
-- **Voll ausgeschriebene Fahrernamen**: Keine abgeschnittenen Namen mit Punkten (`...`).
-- **Gestraffte Ziffern-Typografie**: Speziell formatierter Sekundenpunkt (`renderLapTime`) für perfekte Ablesbarkeit auf Großbildschirmen.
-- **Flexible Ansichten**: Umschaltbar zwischen Tabellenansicht und großer Spaltenansicht für Beamer.
-- **Kronen-Symbol**: Automatische optische Hervorhebung des Gesamtführenden.
-
-### 🗄️ 6. Stammdaten, 1-Klick JSON-Backup & WinRBM MDB-Import
-- **1-Klick JSON-Backup**: Vollständiger Export/Import der gesamten Vereinsdatenbank in 1 Sekunde als `.json`-Datei (perfekt für Rechnerwechsel und Datensicherheit).
-- **1-Klick WinRBM MDB-Import**: Importiert historische Fahrer-, Auto- und Bahndaten direkt aus der originalen `WinRbmDatV1.mdb`.
-- **Neuer Tab „Teams“**: Zentrale Verwaltung von Teams mit 2–6 Fahrern und Team-Fahrzeug.
-- **5 Setup-Felder**: Frei konfigurierbare Setup-Bezeichnungen je Fahrzeug (z. B. Übersetzung, Motor, Reifen, Chassis, Gewicht).
-- **Laufleistungs- & Verschleiß-Tracking**: Automatische Erfassung der Gesamtrunden und gefahrenen Kilometer je Fahrer und Fahrzeug.
-- **Rekord-Editor (`TrackRecordsModal`)**: Direktes Bearbeiten, Korrigieren und Löschen einzelner Bahnrekorde.
-- **Duplikat- und Konfliktschutz**: Verhindert versehentliche Doppelanlagen und blockiert Teams mit bereits belegten Fahrern.
-
-### 🔊 7. Integrierter Web Audio Synthesizer (100% offline)
-- Arbeitet vollständig ohne externe WAV-Dateien oder Ordnerabhängigkeiten: Erzeugt Countdown-Pips, Startgongs, Bestzeit-Dreiklänge, Rekord-Fanfaren, Chaos-Buzzer und Restzeit-Warnungen direkt über die native Web Audio API.
-
-### 🌓 8. Dual-Theme (Dark / Light)
+### 🌓 5. Dual-Theme (Dark / Light)
 - Umschaltbar zwischen Dark Mode (optimiert für dunkle Rennräume und Beamer) und Light Mode (ideal für Tageslicht und Auswertungen im Büro).
-
-### ⌨️ 9. Vollständige Tastatur-Steuerung & Integriertes Handbuch (`F1`)
-- **F1**: Interaktives Benutzerhandbuch in Deutsch & Englisch mit Echtzeit-Volltextsuche direkt in der App.
-- **F6**: Spurrelais-Steuerungsfenster öffnen/schließen.
-- **Leertaste**: Chaos auslösen bzw. fortsetzen / Stromfreigabe in der Qualifikation.
-- **1..8**: Spurstrafe im Chaos toggeln.
-- **Shift + 1..8**: Fliegenden Fahrerwechsel-Dialog für Spur 1–8 öffnen.
-- **Escape**: Jedes offene Dialogfenster schließen.
-- **F11**: Vollbildmodus umschalten.
-
 
 ---
 
