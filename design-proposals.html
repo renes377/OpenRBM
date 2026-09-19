@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="de" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bepfe Web – Desktop UI Evolution (3 Design-Vorschläge)</title>
+  <style>
+    /* Reset & Base Fonts */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --panel: #161b26;
+      --panel-muted: #1f2536;
+      --border: #28334a;
+      --border-focus: #3b82f6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --accent-hover: #3b82f6;
+
+      /* Bepfe Lane Colors */
+      --lane-1: #eab308; /* Yellow */
+      --lane-2: #dc2626; /* Red */
+      --lane-3: #2563eb; /* Blue */
+      --lane-4: #16a34a; /* Green */
+      --lane-5: #e2e8f0; /* White/Gray */
+      --lane-6: #475569; /* Slate */
+      --lane-7: #ea580c; /* Orange */
+      --lane-8: #9333ea; /* Purple */
+    }
+
+    body.light {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --panel-muted: #f1f5f9;
+      --border: #cbd5e1;
+      --border-focus: #2563eb;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #080a0f;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Top Presentation Nav Bar */
+    .pres-header {
+      background: #111622;
+      border-bottom: 2px solid #28334a;
+      padding: 10px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .pres-title-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pres-badge {
+      background: linear-gradient(135deg, #eab308, #ca8a04);
+      color: #000;
+      font-weight: 900;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .pres-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #fff;
+    }
+
+    .pres-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .pres-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-group {
+      display: inline-flex;
+      background: #090c13;
+      border: 1px solid #28334a;
+      border-radius: 6px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .pres-btn {
+      background: transparent;
+      color: #94a3b8;
+      border: none;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pres-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+    }
+
+    .pres-btn.active {
+      background: #2563eb;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.4);
+    }
+
+    .tool-toggle {
+      background: #1e2638;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .tool-toggle:hover {
+      background: #28334a;
+    }
+
+    .tool-toggle.active {
+      background: #ca8a04;
+      color: #000;
+      border-color: #eab308;
+      font-weight: 800;
+    }
+
+    /* Presentation Content Stage */
+    .stage {
+      flex: 1;
+      padding: 20px;
+      max-width: 1700px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    /* 3-5m Distance Simulation Mode */
+    .distance-mode .stage {
+      transform: scale(0.65);
+      transform-origin: top center;
+      filter: blur(0.3px) contrast(1.15);
+      opacity: 0.96;
+    }
+
+    .distance-banner {
+      display: none;
+      background: #ca8a04;
+      color: #000;
+      padding: 8px 16px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 13px;
+      border-bottom: 2px solid #a16207;
+    }
+
+    .distance-mode .distance-banner {
+      display: block;
+    }
+
+    /* Design Overview Banner */
+    .concept-card {
+      background: #161b26;
+      border: 1px solid #28334a;
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .concept-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+
+    .concept-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .concept-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      max-width: 850px;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .concept-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      background: #1f2536;
+      border: 1px solid #334155;
+      border-radius: 4px;
+      color: #cbd5e1;
+      font-family: ui-monospace, monospace;
+    }
+
+    /* Window Frame (Desktop Software Simulation) */
+    .desktop-window {
+      background: var(--bg);
+      border: 1px solid #334155;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      min-height: 780px;
+      position: relative;
+    }
+
+    /* Windows/Desktop Style Titlebar */
+    .window-titlebar {
+      height: 32px;
+      background: #0f141d;
+      border-bottom: 1px solid #242c3d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      font-size: 12px;
+      color: #94a3b8;
+      user-select: none;
+    }
+
+    .window-title-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .window-traffic-lights {
+      display: flex;
+      gap: 6px;
+    }
+
+    .window-traffic-lights span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .light-close { background: #ef4444; }
+    .light-min { background: #f59e0b; }
+    .light-max { background: #10b981; }
+
+    /* Telemetry Ribbon / Header */
+    .app-header {
+      background: var(--panel);
+      border-bottom: 2px solid var(--border);
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 52px;
+    }
+
+    .app-branding {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-logo-box {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #fff;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.8px;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .app-nav-tabs {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .nav-tab {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 4px;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .nav-tab:hover {
+      color: var(--text);
+      background: var(--panel-muted);
+    }
+
+    .nav-tab.active {
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+
+    .nav-shortcut {
+      font-size: 10px;
+      opacity: 0.7;
+      font-family: ui-monospace, monospace;
+      padding: 1px 4px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 3px;
+    }
+
+    /* Hardware Telemetry Dock (Right Header) */
+    .hardware-dock {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hw-status-pill {
+      background: var(--panel-muted);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: ui-monospace, monospace;
+    }
+
+    .led-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.85); }
+    }
+
+    /* Relay Matrix Mini Grid */
+    .relay-matrix {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      background: #090c13;
+      padding: 3px 6px;
+      border-radius: 4px;
+      border: 1px solid #28334a;
+    }
+
+    .relay-channel {
+      width: 14px;
+      height: 18px;
+      background: #10b981;
+      color: #000;
+      font-size: 9px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+    }
+
+    .relay-channel.off {
+      background: #334155;
+      color: #64748b;
+    }
+
+    /* Power Switch */
+    .power-switch-btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #059669;
+      background: #059669;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+      transition: all 0.15s;
+    }
+
+    .power-switch-btn.off {
+      background: #dc2626;
+      border-color: #b91c1c;
+      box-shadow: 0 2px 8px rgba(220,38,38,0.3);
+    }
+
+    /* =========================================================
+       PROPOSAL SPECIFIC THEMES & FIRST ROW STYLES
+       ========================================================= */
+
+    /* ---------------------------------------------------------
+       PROPOSAL 1: RACE CONTROL PRO (Leitstand)
+       --------------------------------------------------------- */
+    .p1-header-bar {
+      background: #0a0d14;
+      border-bottom: 2px solid #1e293b;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 52px;
+    }
+
+    .p1-race-state {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .p1-mode-tag {
+      font-size: 22px;
+      font-weight: 900;
+      color: #f8fafc;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .p1-heat-badge {
+      background: #1e293b;
+      border: 1px solid #3b82f6;
+      color: #60a5fa;
+      font-family: ui-monospace, monospace;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 4px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .p1-flag-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      background: #064e3b;
+      border: 1px solid #10b981;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #a7f3d0;
+      letter-spacing: 0.5px;
+    }
+
+    .p1-pausing-banner {
+      background: #ca8a04;
+      color: #000;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #eab308;
+      box-shadow: 0 2px 6px rgba(234,179,8,0.3);
+    }
+
+    .p1-center-telemetry {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .p1-timer-display {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: #ffffff;
+      background: #000000;
+      padding: 2px 14px;
+      border-radius: 4px;
+      border: 1px solid #334155;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+      display: inline-flex;
+      align-items: baseline;
+    }
+
+    .p1-timer-ms {
+      font-size: 22px;
+      color: #94a3b8;
+      margin-left: 2px;
+    }
+
+    .p1-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .p1-chaos-switch {
+      background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+      color: #000000;
+      font-weight: 900;
+      font-size: 14px;
+      padding: 8px 18px;
+      border-radius: 4px;
+      border: 1px solid #b45309;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 3px 10px rgba(217,119,6,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+      transition: all 0.1s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .p1-chaos-switch:hover {
+      background: #fbbf24;
+      transform: translateY(-1px);
+    }
+
+    .p1-chaos-switch:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 4px rgba(217,119,6,0.3);
+    }
+
+    .p1-abort-btn {
+      background: #1e2536;
+      border: 1px solid #dc2626;
+      color: #ef4444;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .p1-abort-btn:hover {
+      background: #dc2626;
+      color: #fff;
+    }
+
+    /* ---------------------------------------------------------
+       PROPOSAL 2: BAVARIA PRECISION (WinRBM Classic Modernized)
+       --------------------------------------------------------- */
+    .p2-header-bar {
+      background: #161b26;
+      border-bottom: 2px solid #28334a;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 52px;
+    }
+
+    .p2-title-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .p2-mode-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      border-left: 4px solid #2563eb;
+      padding-left: 10px;
+    }
+
+    .p2-heat-pill {
+      background: #1f2536;
+      border: 1px solid #334155;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 12px;
+      color: #93c5fd;
+    }
+
+    .p2-pausing-block {
+      background: #ca8a04;
+      color: #000;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .p2-timer-box {
+      background: #000;
+      border: 2px solid #2563eb;
+      border-radius: 4px;
+      padding: 2px 16px;
+      color: #fff;
+      font-family: ui-monospace, monospace;
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+
+    .p2-chaos-btn {
+      background: #eab308;
+      border: 2px solid #ca8a04;
+      color: #000;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .p2-chaos-btn:hover {
+      background: #fde047;
+    }
+
+    /* ---------------------------------------------------------
+       PROPOSAL 3: DARK CARBON TELEMETRY (GT3 Cockpit HUD)
+       --------------------------------------------------------- */
+    .p3-header-bar {
+      background: #090d14;
+      border-bottom: 2px solid #38bdf8;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 52px;
+      box-shadow: 0 2px 15px rgba(56,189,248,0.15);
+      background-image: radial-gradient(#1e293b 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
+
+    .p3-tag {
+      background: #0369a1;
+      color: #e0f2fe;
+      font-weight: 900;
+      font-size: 11px;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+
+    .p3-mode-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.5px;
+      text-shadow: 0 0 10px rgba(56,189,248,0.4);
+    }
+
+    .p3-timer-hud {
+      background: #000;
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      padding: 2px 16px;
+      border-radius: 4px;
+      font-family: ui-monospace, monospace;
+      font-size: 38px;
+      font-weight: 900;
+      box-shadow: 0 0 15px rgba(56,189,248,0.25);
+    }
+
+    .p3-chaos-hazard {
+      background: repeating-linear-gradient(
+        -45deg,
+        #eab308,
+        #eab308 10px,
+        #000 10px,
+        #000 20px
+      );
+      color: #fff;
+      padding: 2px;
+      border-radius: 4px;
+      border: 1px solid #ca8a04;
+    }
+
+    .p3-chaos-inner {
+      background: #000;
+      color: #facc15;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 6px 14px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .p3-chaos-inner:hover {
+      background: #eab308;
+      color: #000;
+    }
+
+    /* =========================================================
+       100% UNVERÄNDERTER BEPFE RENNBILDSCHIRM (LiveScoreboard)
+       ========================================================= */
+    .scoreboard-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .scoreboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      user-select: none;
+    }
+
+    .scoreboard-thead th {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #334155;
+      padding: 6px 10px;
+      text-align: left;
+      height: 34px;
+    }
+
+    .lane-row {
+      height: 105px;
+      border-bottom: 2px solid #334155;
+      transition: background 0.15s;
+    }
+
+    .lane-row.leader {
+      outline: 2px solid #f59e0b;
+      outline-offset: -2px;
+    }
+
+    /* Authentic Bepfe Lane Tint */
+    .lane-row-1 { background-color: rgba(234, 179, 8, 0.52); }
+    .lane-row-2 { background-color: rgba(220, 38, 38, 0.52); }
+    .lane-row-3 { background-color: rgba(37, 99, 235, 0.52); }
+    .lane-row-4 { background-color: rgba(22, 163, 74, 0.52); }
+
+    .lane-cell-lane {
+      width: 65px;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .lane-indicator-stripe {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+    }
+
+    .lane-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: 900;
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+
+    .badge-1 { background: var(--lane-1); color: #000; }
+    .badge-2 { background: var(--lane-2); color: #fff; }
+    .badge-3 { background: var(--lane-3); color: #fff; }
+    .badge-4 { background: var(--lane-4); color: #fff; }
+
+    .lane-cell-pos {
+      width: 65px;
+      font-size: 46px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .lane-cell-driver {
+      padding-left: 4px;
+    }
+
+    .driver-name {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .driver-car {
+      font-size: 17px;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    .lane-cell-laps {
+      width: 170px;
+      text-align: right;
+      padding-right: 20px;
+    }
+
+    .laps-number {
+      font-family: ui-monospace, "SF Mono", monospace;
+      font-size: 56px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .lane-cell-last {
+      width: 190px;
+      text-align: right;
+      padding-right: 20px;
+      font-family: ui-monospace, monospace;
+      font-size: 46px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .lane-cell-history {
+      width: 100px;
+      text-align: center;
+    }
+
+    .history-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-family: ui-monospace, monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .lane-cell-best {
+      width: 200px;
+      text-align: center;
+      padding-right: 14px;
+    }
+
+    .best-lap-badge {
+      display: inline-block;
+      background: rgba(147, 51, 234, 0.25);
+      border: 2px solid #a855f7;
+      color: #e9d5ff;
+      font-family: ui-monospace, monospace;
+      font-size: 36px;
+      font-weight: 900;
+      padding: 2px 12px;
+      border-radius: 6px;
+    }
+
+    /* Live Bepfe Progress Bar */
+    .bepfe-progress-bar-wrap {
+      height: 14px;
+      background: #090c13;
+      border-top: 1px solid #1e293b;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bepfe-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+      width: 68%;
+      box-shadow: 0 0 10px rgba(59,130,246,0.6);
+      transition: width 0.3s linear;
+    }
+
+    /* =========================================================
+       VIEW B: RACE SETUP PANEL (Desktop Pro Controls)
+       ========================================================= */
+    .setup-view-container {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: var(--bg);
+      flex: 1;
+    }
+
+    .segmented-main-rail {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .segment-choice {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s;
+    }
+
+    .segment-choice.selected {
+      border-color: #3b82f6;
+      background: rgba(37,99,235,0.12);
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+
+    .segment-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .segment-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .setup-grid-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .desktop-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+    }
+
+    .segmented-inline {
+      display: inline-flex;
+      background: #090c13;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .inline-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .inline-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .param-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    .param-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .param-input-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .desktop-input {
+      background: #090c13;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 5px 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 4px;
+      width: 90px;
+      text-align: right;
+      font-family: ui-monospace, monospace;
+    }
+
+    .desktop-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    /* Driver Slot Matrix */
+    .driver-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .driver-slot-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--panel-muted);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 8px 10px;
+    }
+
+    .slot-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .slot-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+      flex: 1;
+    }
+
+    .slot-car {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Start / Action Bar */
+    .setup-actions-bar {
+      margin-top: auto;
+      background: var(--panel);
+      border-top: 2px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .btn-desktop-primary {
+      background: linear-gradient(180deg, #2563eb, #1d4ed8);
+      color: #fff;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 10px 24px;
+      border-radius: 4px;
+      border: 1px solid #1e40af;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+    }
+
+    .btn-desktop-primary:hover {
+      background: #3b82f6;
+    }
+
+    /* Bottom Desktop Status Footer */
+    .desktop-footer-status {
+      height: 26px;
+      background: #090c13;
+      border-top: 1px solid #242c3d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      font-size: 11px;
+      color: #64748b;
+      font-family: ui-monospace, monospace;
+    }
+
+    .footer-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .kbd-shortcut {
+      background: #1e2536;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    /* Chaos Active Simulation State */
+    .chaos-active-overlay {
+      position: absolute;
+      top: 32px; /* below titlebar */
+      left: 0;
+      right: 0;
+      background: #dc2626;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      text-align: center;
+      padding: 10px;
+      z-index: 500;
+      display: none;
+      box-shadow: 0 6px 20px rgba(220,38,38,0.7);
+      letter-spacing: 1px;
+      animation: flash 1s infinite;
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+
+    .is-chaos .chaos-active-overlay {
+      display: block;
+    }
+
+    /* Comparison Table Card */
+    .comparison-section {
+      background: #111622;
+      border: 1px solid #28334a;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 10px;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+
+    .comparison-table th, .comparison-table td {
+      padding: 10px 14px;
+      border: 1px solid #28334a;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .comparison-table th {
+      background: #1a2233;
+      color: #93c5fd;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Presentation Header & Top Switcher -->
+  <header class="pres-header">
+    <div class="pres-title-area">
+      <span class="pres-badge">Bepfe Web</span>
+      <div>
+        <h1 class="pres-title">Desktop UI Evolution – 3 Design-Vorschläge</h1>
+        <p class="pres-subtitle">Kein Mobile-Look mehr · 3–5m Fernablesbar · Rennbildschirm 100% geschützt (nur 1. Zeile modifiziert)</p>
+      </div>
+    </div>
+
+    <div class="pres-controls">
+      <!-- Proposal Switcher -->
+      <div class="btn-group">
+        <button class="pres-btn active" id="btn-p1" onclick="switchProposal(1)">
+          <span>🏎️</span>
+          <span>1. Race Control Pro</span>
+        </button>
+        <button class="pres-btn" id="btn-p2" onclick="switchProposal(2)">
+          <span>📐</span>
+          <span>2. Bavaria Precision</span>
+        </button>
+        <button class="pres-btn" id="btn-p3" onclick="switchProposal(3)">
+          <span>🏁</span>
+          <span>3. Dark Carbon Telemetry</span>
+        </button>
+      </div>
+
+      <!-- View Switcher -->
+      <div class="btn-group">
+        <button class="pres-btn active" id="view-race" onclick="switchView('race')">
+          <span>⏱️</span>
+          <span>Rennbildschirm (Live)</span>
+        </button>
+        <button class="pres-btn" id="view-setup" onclick="switchView('setup')">
+          <span>⚙️</span>
+          <span>Rennvorbereitung</span>
+        </button>
+      </div>
+
+      <!-- Tools -->
+      <button class="tool-toggle" id="btn-distance" onclick="toggleDistanceMode()">
+        <span>🔭</span>
+        <span>3–5m Distanz-Test</span>
+      </button>
+
+      <button class="tool-toggle" id="btn-chaos" onclick="toggleChaosSimulation()">
+        <span>⚠️</span>
+        <span>Chaos-Test</span>
+      </button>
+
+      <button class="tool-toggle" onclick="toggleTheme()">
+        <span>🌓</span>
+        <span>Dark/Light</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Distance Simulation Warning Banner -->
+  <div class="distance-banner">
+    🔭 DISTANZ-SIMULATOR AKTIV: Simulation eines 24"-Monitors aus ca. 3,5–4 Metern Entfernung. Beachten Sie die sofortige Lesbarkeit der großen Rundenzeiten, der Spurfarben und des Timers!
+  </div>
+
+  <!-- Main Presentation Stage -->
+  <main class="stage" id="stage">
+
+    <!-- Concept Description Card -->
+    <div class="concept-card">
+      <div>
+        <span class="concept-badge" id="c-badge" style="background: #2563eb; color: #fff;">Vorschlag 1</span>
+        <h2 class="concept-title" id="c-title">Race Control Pro – Motorsport-Leitstand & FIA Timing Suite</h2>
+        <p class="concept-desc" id="c-desc">
+          Inspiriert von professionellen Rennleitungs- und Telemetrie-Suiten (Tag Heuer Professional Timing, MoTeC i2 Pro, WEC Timing Desk).
+          Kompakte, hochfunktionale Kopfzeile mit integriertem Hardware-Monitor, taktilen Bedienelementen mit 4px-Kantenradien und sofort erfassbaren Tastaturkürzeln.
+        </p>
+      </div>
+      <div class="concept-pills" id="c-pills">
+        <span class="pill">Hardware-Dock (COM / Relais)</span>
+        <span class="pill">Not-Aus Chaos-Switch</span>
+        <span class="pill">Digitaler 7-Segment-Timer</span>
+        <span class="pill">4px Desktop-Radien</span>
+      </div>
+    </div>
+
+    <!-- Desktop Software Window Wrapper -->
+    <div class="desktop-window" id="desktop-window">
+      <!-- Chaos Overlay Banner -->
+      <div class="chaos-active-overlay" id="chaos-banner">
+        ⚠️ CHAOS – BAHNSTROM ABGESCHALTET · [LEERTASTE] ZUM WEITERFAHREN
+      </div>
+
+      <!-- OS Titlebar -->
+      <div class="window-titlebar">
+        <div class="window-title-left">
+          <div class="window-traffic-lights">
+            <span class="light-close"></span>
+            <span class="light-min"></span>
+            <span class="light-max"></span>
+          </div>
+          <span>Bepfe Web Pro – WinRBM Edition 2026</span>
+          <span style="opacity: 0.5;">|</span>
+          <span style="color: #60a5fa;">GP von Monza (4 Spuren, 138.4m)</span>
+        </div>
+        <div style="font-family: ui-monospace, monospace; font-size: 11px;">
+          <span>V1.32.8-PRO · Electron Standalone</span>
+        </div>
+      </div>
+
+      <!-- Top App Navigation & Hardware Ribbon -->
+      <div class="app-header">
+        <div class="app-branding">
+          <div class="app-logo-box">
+            <span>🏁</span>
+            <span>BEPFE WEB</span>
+          </div>
+          <nav class="app-nav-tabs">
+            <a class="nav-tab active">
+              <span>[1] Rennen</span>
+              <span class="nav-shortcut">F2</span>
+            </a>
+            <a class="nav-tab">
+              <span>[2] Datenbank</span>
+              <span class="nav-shortcut">F3</span>
+            </a>
+            <a class="nav-tab">
+              <span>[3] Auswertung</span>
+              <span class="nav-shortcut">F4</span>
+            </a>
+            <a class="nav-tab">
+              <span>[4] Einstellungen</span>
+              <span class="nav-shortcut">F5</span>
+            </a>
+          </nav>
+        </div>
+
+        <!-- Hardware Telemetry Dock -->
+        <div class="hardware-dock">
+          <div class="hw-status-pill" title="Serielle Schnittstelle zu Bepfe-IE">
+            <span class="led-dot"></span>
+            <span>COM3 · 9600 8N1 · 12ms</span>
+          </div>
+
+          <!-- 8-Channel Relay State Display -->
+          <div class="relay-matrix" title="Fahrstrom-Relais Kanal 1–8">
+            <div class="relay-channel">1</div>
+            <div class="relay-channel">2</div>
+            <div class="relay-channel">3</div>
+            <div class="relay-channel">4</div>
+            <div class="relay-channel off">5</div>
+            <div class="relay-channel off">6</div>
+            <div class="relay-channel off">7</div>
+            <div class="relay-channel off">8</div>
+          </div>
+
+          <!-- Master Power Toggle Button -->
+          <button class="power-switch-btn" id="power-btn" onclick="togglePower()">
+            <span>⚡ STROM AN</span>
+            <span class="nav-shortcut" style="background: rgba(0,0,0,0.3); color: #fff;">F6</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- =======================================================
+           VIEW 1: RENNBILDSCHIRM (Live Mode)
+           ======================================================= -->
+      <div id="view-container-race" style="display: flex; flex-direction: column; flex: 1;">
+
+        <!-- 1. ZEILE: Modernisierter Header (Dynamisch je nach Vorschlag) -->
+        <div id="dynamic-first-line">
+          <!-- Proposal 1 First Line (Default) -->
+          <div class="p1-header-bar">
+            <div class="p1-race-state">
+              <span class="p1-mode-tag">
+                <span>🏁</span>
+                <span>Serienrennen</span>
+              </span>
+              <span class="p1-heat-badge">LAUF 3/8 · GRUPPE 1</span>
+              <div class="p1-flag-box">
+                <span>🟢</span>
+                <span>GREEN FLAG · LIVE</span>
+              </div>
+              <div class="p1-pausing-banner">
+                <span>⏸️ PAUSE:</span>
+                <span>K. Müller, S. Meier</span>
+              </div>
+            </div>
+
+            <div class="p1-center-telemetry">
+              <div class="p1-timer-display" id="race-timer">
+                04:18<span class="p1-timer-ms">.85</span>
+              </div>
+            </div>
+
+            <div class="p1-actions">
+              <button class="p1-chaos-switch" onclick="toggleChaosSimulation()">
+                <span>⚠️ CHAOS</span>
+                <span class="kbd-shortcut" style="background: rgba(0,0,0,0.3); color:#000;">SPACE</span>
+              </button>
+              <button class="p1-abort-btn">
+                <span>ABBRUCH</span>
+                <span class="kbd-shortcut">ESC</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 100% UNVERÄNDERTER RENNBILDSCHIRM (LiveScoreboard) -->
+        <div class="scoreboard-container">
+          <table class="scoreboard-table">
+            <thead class="scoreboard-thead">
+              <tr>
+                <th style="width: 70px; padding-left: 14px;">SPUR</th>
+                <th style="width: 70px;">POS</th>
+                <th>FAHRER / FAHRZEUG</th>
+                <th style="width: 180px; text-align: right; padding-right: 20px;">RUNDEN</th>
+                <th style="width: 190px; text-align: right; padding-right: 20px;">LETZTE</th>
+                <th style="width: 110px; text-align: center;">LETZTE 5 R</th>
+                <th style="width: 200px; text-align: center;">BESTE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- SPUR 1 (GELB - Führender) -->
+              <tr class="lane-row lane-row-1 leader">
+                <td class="lane-cell-lane">
+                  <span class="lane-indicator-stripe" style="background: var(--lane-1);"></span>
+                  <span class="lane-badge badge-1">1</span>
+                </td>
+                <td class="lane-cell-pos">👑 1</td>
+                <td class="lane-cell-driver">
+                  <div class="driver-name">Michael Schumacher</div>
+                  <div class="driver-car">Porsche 911 GT3 R · Slot.it HRS2</div>
+                </td>
+                <td class="lane-cell-laps">
+                  <div class="laps-number">42</div>
+                </td>
+                <td class="lane-cell-last">8.412</td>
+                <td class="lane-cell-history">
+                  <div class="history-stack">
+                    <span>8.480</span>
+                    <span>8.435</span>
+                    <span>8.512</span>
+                  </div>
+                </td>
+                <td class="lane-cell-best">
+                  <div class="best-lap-badge">8.354</div>
+                </td>
+              </tr>
+
+              <!-- SPUR 2 (ROT - Zweiter) -->
+              <tr class="lane-row lane-row-2">
+                <td class="lane-cell-lane">
+                  <span class="lane-indicator-stripe" style="background: var(--lane-2);"></span>
+                  <span class="lane-badge badge-2">2</span>
+                </td>
+                <td class="lane-cell-pos">2</td>
+                <td class="lane-cell-driver">
+                  <div class="driver-name">Stefan Bellof</div>
+                  <div class="driver-car">BMW M4 GT3 · NSR EVO</div>
+                </td>
+                <td class="lane-cell-laps">
+                  <div class="laps-number">41</div>
+                </td>
+                <td class="lane-cell-last">8.520</td>
+                <td class="lane-cell-history">
+                  <div class="history-stack">
+                    <span>8.540</span>
+                    <span>8.530</span>
+                    <span>8.610</span>
+                  </div>
+                </td>
+                <td class="lane-cell-best">
+                  <div style="font-family: ui-monospace, monospace; font-size: 34px; font-weight: 800; color: #fff;">8.421</div>
+                </td>
+              </tr>
+
+              <!-- SPUR 3 (BLAU - Dritter) -->
+              <tr class="lane-row lane-row-3">
+                <td class="lane-cell-lane">
+                  <span class="lane-indicator-stripe" style="background: var(--lane-3);"></span>
+                  <span class="lane-badge badge-3">3</span>
+                </td>
+                <td class="lane-cell-pos">3</td>
+                <td class="lane-cell-driver">
+                  <div class="driver-name">Christian Waldeck</div>
+                  <div class="driver-car">Audi R8 LMS GT3 · Scaleauto</div>
+                </td>
+                <td class="lane-cell-laps">
+                  <div class="laps-number">40</div>
+                </td>
+                <td class="lane-cell-last">8.615</td>
+                <td class="lane-cell-history">
+                  <div class="history-stack">
+                    <span>8.640</span>
+                    <span>8.625</span>
+                    <span>8.700</span>
+                  </div>
+                </td>
+                <td class="lane-cell-best">
+                  <div style="font-family: ui-monospace, monospace; font-size: 34px; font-weight: 800; color: #fff;">8.510</div>
+                </td>
+              </tr>
+
+              <!-- SPUR 4 (GRÜN - Vierter) -->
+              <tr class="lane-row lane-row-4">
+                <td class="lane-cell-lane">
+                  <span class="lane-indicator-stripe" style="background: var(--lane-4);"></span>
+                  <span class="lane-badge badge-4">4</span>
+                </td>
+                <td class="lane-cell-pos">4</td>
+                <td class="lane-cell-driver">
+                  <div class="driver-name">Thomas Krombholz</div>
+                  <div class="driver-car">Mercedes-AMG GT3 · Thunderslot</div>
+                </td>
+                <td class="lane-cell-laps">
+                  <div class="laps-number">39</div>
+                </td>
+                <td class="lane-cell-last">8.780</td>
+                <td class="lane-cell-history">
+                  <div class="history-stack">
+                    <span>8.810</span>
+                    <span>8.790</span>
+                    <span>8.840</span>
+                  </div>
+                </td>
+                <td class="lane-cell-best">
+                  <div style="font-family: ui-monospace, monospace; font-size: 34px; font-weight: 800; color: #fff;">8.650</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Bepfe-blauer Fortschrittsbalken am unteren Bildrand -->
+          <div class="bepfe-progress-bar-wrap">
+            <div class="bepfe-progress-fill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =======================================================
+           VIEW 2: RENNVORBEREITUNG (Setup View)
+           ======================================================= -->
+      <div id="view-container-setup" class="setup-view-container" style="display: none;">
+        <!-- Segmented Main Mode Switcher -->
+        <div class="segmented-main-rail">
+          <div class="segment-choice selected">
+            <div>
+              <div class="segment-title">🏆 Meisterschaft & Serienrennen</div>
+              <div class="segment-sub">Spurwechsel-Matrix, Gruppen, Qualifikation & Gesamtwertung</div>
+            </div>
+            <span class="kbd-shortcut" style="background: #2563eb; color:#fff;">F2</span>
+          </div>
+
+          <div class="segment-choice">
+            <div>
+              <div class="segment-title">⏱️ Freies & Zeittraining</div>
+              <div class="segment-sub">Schiebeband-Rotation, F1-Modus & Einzelbestzeiten</div>
+            </div>
+            <span class="kbd-shortcut">F3</span>
+          </div>
+        </div>
+
+        <!-- 2 Column Desktop Control Grid -->
+        <div class="setup-grid-columns">
+          <!-- Left Column: Race Rules & Timing Parameters -->
+          <div class="desktop-card">
+            <div class="card-header-bar">
+              <span class="card-title">Renn-Parameter & Reglement</span>
+              <div class="segmented-inline">
+                <button class="inline-btn">Einzellauf</button>
+                <button class="inline-btn active">Serienrennen</button>
+                <button class="inline-btn">Team-Stints</button>
+              </div>
+            </div>
+
+            <div class="param-row">
+              <span class="param-label">Laufdauer / Distanz</span>
+              <div class="param-input-group">
+                <input class="desktop-input" type="number" value="5" />
+                <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Minuten</span>
+              </div>
+            </div>
+
+            <div class="param-row">
+              <span class="param-label">Rennende-Modus</span>
+              <div class="segmented-inline">
+                <button class="inline-btn active">Slot-Modus</button>
+                <button class="inline-btn">F1-Modus</button>
+                <button class="inline-btn">Vollzeit</button>
+              </div>
+            </div>
+
+            <div class="param-row">
+              <span class="param-label">Nachlaufzeit (Overtake Time)</span>
+              <div class="param-input-group">
+                <input class="desktop-input" type="number" value="3" />
+                <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Sekunden</span>
+              </div>
+            </div>
+
+            <div class="param-row">
+              <span class="param-label">Pause zwischen Läufen</span>
+              <div class="param-input-group">
+                <input class="desktop-input" type="number" value="30" />
+                <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">Sekunden</span>
+              </div>
+            </div>
+
+            <div class="param-row">
+              <span class="param-label">Qualifikation aktiv</span>
+              <div class="segmented-inline">
+                <button class="inline-btn">AUS</button>
+                <button class="inline-btn active">EIN (1 R.)</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Starting Grid & Lane Assignment -->
+          <div class="desktop-card">
+            <div class="card-header-bar">
+              <span class="card-title">Startaufstellung (Lauf 1 · Gruppe 1)</span>
+              <button class="inline-btn active" style="font-size: 11px;">Mischen (Zufall)</button>
+            </div>
+
+            <div class="driver-grid">
+              <div class="driver-slot-row">
+                <div class="slot-num badge-1">S1</div>
+                <div class="slot-name">Michael Schumacher</div>
+                <div class="slot-car">Porsche 911 GT3</div>
+              </div>
+              <div class="driver-slot-row">
+                <div class="slot-num badge-2">S2</div>
+                <div class="slot-name">Stefan Bellof</div>
+                <div class="slot-car">BMW M4 GT3</div>
+              </div>
+              <div class="driver-slot-row">
+                <div class="slot-num badge-3">S3</div>
+                <div class="slot-name">Christian Waldeck</div>
+                <div class="slot-car">Audi R8 LMS</div>
+              </div>
+              <div class="driver-slot-row">
+                <div class="slot-num badge-4">S4</div>
+                <div class="slot-name">Thomas Krombholz</div>
+                <div class="slot-car">Mercedes-AMG</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Setup Bottom Action Dock -->
+        <div class="setup-actions-bar">
+          <div style="font-size: 13px; color: var(--text-muted); font-weight: 700;">
+            <span>Gesamtdauer: <strong>8 Läufe × 5:00 min = 40:00 min</strong> (+ Pausen)</span>
+          </div>
+
+          <div style="display: flex; gap: 10px;">
+            <button class="pres-btn" style="background: var(--panel-muted); border: 1px solid var(--border);">
+              📋 Startaufstellung bearbeiten
+            </button>
+            <button class="btn-desktop-primary" onclick="switchView('race')">
+              <span>🚦 STARTAMPEL AUSLÖSEN</span>
+              <span class="kbd-shortcut" style="background: rgba(0,0,0,0.3); color: #fff;">ENTER</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Software Status Footer -->
+      <footer class="desktop-footer-status">
+        <div class="footer-section">
+          <div class="footer-item">
+            <span style="color: #10b981;">●</span>
+            <span>BEPFE IE VERBUNDEN</span>
+          </div>
+          <div class="footer-item">
+            <span>BAHN: <strong>Clubbahn 4 Spuren</strong></span>
+          </div>
+          <div class="footer-item">
+            <span>MIN-RUNDE: <strong>4.500s</strong></span>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="footer-item">
+            <span>REKORD: <strong>8.120s (M. Schumacher)</strong></span>
+          </div>
+          <div class="footer-item">
+            <span class="kbd-shortcut">F1</span>
+            <span>Handbuch</span>
+          </div>
+          <div class="footer-item">
+            <span class="kbd-shortcut">F6</span>
+            <span>Strom</span>
+          </div>
+          <div class="footer-item">
+            <span class="kbd-shortcut">SPACE</span>
+            <span>Chaos</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Comparative Analysis Card -->
+    <div class="comparison-section">
+      <h3 style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 6px;">
+        📊 Detail-Vergleich der 3 Design-Konzepte
+      </h3>
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Kriterium</th>
+            <th>1. Race Control Pro</th>
+            <th>2. Bavaria Precision</th>
+            <th>3. Dark Carbon Telemetry</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Inspiration & Stil</strong></td>
+            <td>Tag Heuer Pro Timing / WEC Leitstand</td>
+            <td>Modernes WinRBM Classic / Siemens Suite</td>
+            <td>Porsche GT3 Cockpit / DDU Telemetrie</td>
+          </tr>
+          <tr>
+            <td><strong>Kanten & Geometrie</strong></td>
+            <td>Kompakt, 4px Kanten, taktile Insets</td>
+            <td>Scharfe 4px Kanten, saubere Bevel-Rahmen</td>
+            <td>Schnittkanten, Hexagon-/Carbon-Akzente</td>
+          </tr>
+          <tr>
+            <td><strong>Erste Zeile (Timer & Status)</strong></td>
+            <td>Pechschwarzer Digital-Timer mit ms-Badge</td>
+            <td>Zweigeteilte Statuszeile mit LED-Rahmen</td>
+            <td>Leuchtendes HUD-Display mit Flaggen-Glow</td>
+          </tr>
+          <tr>
+            <td><strong>3–5m Fernablesbarkeit</strong></td>
+            <td>Hervorragend (weiße Ziffern auf Schwarz)</td>
+            <td>Extrem hoch durch harten Kontrast</td>
+            <td>Sehr gut (leuchtende Konturen & Flaggen)</td>
+          </tr>
+          <tr>
+            <td><strong>Rennbildschirm-Garantie</strong></td>
+            <td>100% unverändert unter Zeile 1</td>
+            <td>100% unverändert unter Zeile 1</td>
+            <td>100% unverändert unter Zeile 1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script>
+    let currentProposal = 1;
+    let currentView = 'race';
+    let isDistanceMode = false;
+    let isChaosActive = false;
+    let isPowerOn = true;
+
+    const proposals = {
+      1: {
+        badge: 'Vorschlag 1',
+        badgeColor: '#2563eb',
+        title: 'Race Control Pro – Motorsport-Leitstand & FIA Timing Suite',
+        desc: 'Inspiriert von professionellen Rennleitungs- und Telemetrie-Suiten (Tag Heuer Professional Timing, MoTeC i2 Pro, WEC Timing Desk). Kompakte, hochfunktionale Kopfzeile mit integriertem Hardware-Monitor, taktilen Bedienelementen mit 4px-Kantenradien und sofort erfassbaren Tastaturkürzeln.',
+        pills: ['Hardware-Dock (COM / Relais)', 'Not-Aus Chaos-Switch', 'Digitaler 7-Segment-Timer', '4px Desktop-Radien'],
+        headerHtml: `
+          <div class="p1-header-bar">
+            <div class="p1-race-state">
+              <span class="p1-mode-tag">
+                <span>🏁</span>
+                <span>Serienrennen</span>
+              </span>
+              <span class="p1-heat-badge">LAUF 3/8 · GRUPPE 1</span>
+              <div class="p1-flag-box">
+                <span>🟢</span>
+                <span>GREEN FLAG · LIVE</span>
+              </div>
+              <div class="p1-pausing-banner">
+                <span>⏸️ PAUSE:</span>
+                <span>K. Müller, S. Meier</span>
+              </div>
+            </div>
+
+            <div class="p1-center-telemetry">
+              <div class="p1-timer-display" id="race-timer">
+                04:18<span class="p1-timer-ms">.85</span>
+              </div>
+            </div>
+
+            <div class="p1-actions">
+              <button class="p1-chaos-switch" onclick="toggleChaosSimulation()">
+                <span>⚠️ CHAOS</span>
+                <span class="kbd-shortcut" style="background: rgba(0,0,0,0.3); color:#000;">SPACE</span>
+              </button>
+              <button class="p1-abort-btn">
+                <span>ABBRUCH</span>
+                <span class="kbd-shortcut">ESC</span>
+              </button>
+            </div>
+          </div>
+        `
+      },
+      2: {
+        badge: 'Vorschlag 2',
+        badgeColor: '#16a34a',
+        title: 'Bavaria Precision – Modernes WinRBM Classic & Clean Desktop Suite',
+        desc: 'Moderne Neuinterpretation des bewährten WinRBM-Layouts im Look einer hochmodernen Windows 11 / macOS Engineering-Suite. Zweigeteilter Status-Header mit extrem scharfen Kanten, maximalem Schwarz-Weiß-Kontrast und strukturierter Gruppenkasten-Architektur.',
+        pills: ['Klassische WinRBM-Logik', 'Zweigeteilter Timer-Block', 'Industrie-Schalter', 'Reine Tabular-Ziffern'],
+        headerHtml: `
+          <div class="p2-header-bar">
+            <div class="p2-title-block">
+              <span class="p2-mode-title">SERIENRENNEN</span>
+              <span class="p2-heat-pill">Lauf 3 von 8 · Gruppe 1</span>
+              <span class="p2-pausing-block">
+                <span>⏸️ Pausierend:</span>
+                <strong>Klaus Müller, Sven Meier</strong>
+              </span>
+            </div>
+
+            <div>
+              <div class="p2-timer-box" id="race-timer">
+                04:18.8
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <button class="p2-chaos-btn" onclick="toggleChaosSimulation()">
+                <span>⚠️ CHAOS [LEERTASTE]</span>
+              </button>
+              <button class="p1-abort-btn" style="border-color: #475569; color: #cbd5e1;">
+                STOP [ESC]
+              </button>
+            </div>
+          </div>
+        `
+      },
+      3: {
+        badge: 'Vorschlag 3',
+        badgeColor: '#0284c7',
+        title: 'Dark Carbon Telemetry – GT3 Sim-Cockpit & High-Tech HUD',
+        desc: 'Entwickelt für das ultimative Motorsport-Feeling an der Bahn. Tiefschwarze Carbon-Optik mit leuchtendem Cyan-HUD-Timer, dynamischer Rennflaggen-Illumination und signalstarker Gefahrenschraffur bei Chaos oder Laufpausen.',
+        pills: ['GT3 Motorsport HUD', 'Leucht-Timer (Cyan Glow)', 'Hazard-Schraffur Chaos', 'Mikro-Grid Hintergrund'],
+        headerHtml: `
+          <div class="p3-header-bar">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="p3-tag">GT3 RACE TELEMETRY</span>
+              <span class="p3-mode-name">SERIENRENNEN</span>
+              <span style="font-family: ui-monospace; font-size: 13px; color: #38bdf8; font-weight: 800;">[HEAT 3/8]</span>
+              <div style="background: rgba(234,179,8,0.2); border: 1px solid #eab308; color: #fde047; padding: 3px 10px; border-radius: 3px; font-weight: 800; font-size: 12px;">
+                ⏸️ PIT: K. Müller, S. Meier
+              </div>
+            </div>
+
+            <div>
+              <div class="p3-timer-hud" id="race-timer">
+                04:18:85
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <div class="p3-chaos-hazard">
+                <button class="p3-chaos-inner" onclick="toggleChaosSimulation()">
+                  <span>⚡ NOT-CHAOS [SPACE]</span>
+                </button>
+              </div>
+              <button class="p1-abort-btn" style="border-color: #ef4444; color: #ef4444;">
+                ABORT
+              </button>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    function switchProposal(num) {
+      currentProposal = num;
+      document.querySelectorAll('.pres-btn[id^="btn-p"]').forEach(b => b.classList.remove('active'));
+      document.getElementById(`btn-p${num}`).classList.add('active');
+
+      const data = proposals[num];
+      document.getElementById('c-badge').textContent = data.badge;
+      document.getElementById('c-badge').style.background = data.badgeColor;
+      document.getElementById('c-title').textContent = data.title;
+      document.getElementById('c-desc').textContent = data.desc;
+
+      const pillsContainer = document.getElementById('c-pills');
+      pillsContainer.innerHTML = data.pills.map(p => `<span class="pill">${p}</span>`).join('');
+
+      document.getElementById('dynamic-first-line').innerHTML = data.headerHtml;
+    }
+
+    function switchView(view) {
+      currentView = view;
+      document.getElementById('view-race').classList.toggle('active', view === 'race');
+      document.getElementById('view-setup').classList.toggle('active', view === 'setup');
+
+      document.getElementById('view-container-race').style.display = view === 'race' ? 'flex' : 'none';
+      document.getElementById('view-container-setup').style.display = view === 'setup' ? 'flex' : 'none';
+    }
+
+    function toggleDistanceMode() {
+      isDistanceMode = !isDistanceMode;
+      document.body.classList.toggle('distance-mode', isDistanceMode);
+      document.getElementById('btn-distance').classList.toggle('active', isDistanceMode);
+    }
+
+    function toggleChaosSimulation() {
+      isChaosActive = !isChaosActive;
+      document.getElementById('desktop-window').classList.toggle('is-chaos', isChaosActive);
+      document.getElementById('btn-chaos').classList.toggle('active', isChaosActive);
+
+      // Also toggle power switch visual
+      const powerBtn = document.getElementById('power-btn');
+      if (isChaosActive) {
+        powerBtn.classList.add('off');
+        powerBtn.innerHTML = `<span>⏹ STROM AUS</span><span class="nav-shortcut" style="background: rgba(0,0,0,0.3); color: #fff;">F6</span>`;
+      } else {
+        powerBtn.classList.remove('off');
+        powerBtn.innerHTML = `<span>⚡ STROM AN</span><span class="nav-shortcut" style="background: rgba(0,0,0,0.3); color: #fff;">F6</span>`;
+      }
+    }
+
+    function togglePower() {
+      isPowerOn = !isPowerOn;
+      const powerBtn = document.getElementById('power-btn');
+      powerBtn.classList.toggle('off', !isPowerOn);
+      powerBtn.innerHTML = isPowerOn
+        ? `<span>⚡ STROM AN</span><span class="nav-shortcut" style="background: rgba(0,0,0,0.3); color: #fff;">F6</span>`
+        : `<span>⏹ STROM AUS</span><span class="nav-shortcut" style="background: rgba(0,0,0,0.3); color: #fff;">F6</span>`;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+    }
+
+    // Keyboard Shortcuts for presentation
+    window.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT') return;
+      if (e.key === '1') switchProposal(1);
+      if (e.key === '2') switchProposal(2);
+      if (e.key === '3') switchProposal(3);
+      if (e.key === 'd' || e.key === 'D') toggleDistanceMode();
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        toggleChaosSimulation();
+      }
+    });
+
+    // Initialize Proposal 1
+    switchProposal(1);
+  </script>
+</body>
+</html>
