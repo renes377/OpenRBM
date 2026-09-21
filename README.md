@@ -36,7 +36,7 @@ Die Anwendung kann direkt im Browser gestartet werden – ohne Installation:
 
 OpenRBM übernimmt nicht nur alle WinRBM-Funktionen, sondern erweitert sie um zahlreiche moderne Profi-Features für Vereins- und Langstreckenrennen:
 
-### 🏎️ 1. Team- & Langstreckenrennen (Team-Modus)
+### 1. Team- & Langstreckenrennen (Team-Modus)
 - **Mehrfahrer-Teams**: Teams mit 2 bis 6 Fahrern und fest zugewiesenem Team-Fahrzeug.
 - **Startfahrer-Wahl**: Flexible Zuweisung des Startfahrers in der Startaufstellung; automatischer Vorschlag des zuletzt aktiven Fahrers in Serienläufen.
 - **Fliegender Fahrerwechsel im laufenden Rennen**: Blitzschneller Fahrerwechsel per Hotkey (`Shift + 1..8`) oder Direktklick im Scoreboard – ohne das Rennen anhalten zu müssen.
