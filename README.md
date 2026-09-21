@@ -1,7 +1,7 @@
 # OpenRBM – Moderner Rennbahnmanager (Beta)
 
 [![Status](https://img.shields.io/badge/Status-Beta-amber.svg)](#)
-[![Version](https://img.shields.io/badge/Version-v0.6.12-blue.svg)](#)
+[![Version](https://img.shields.io/badge/Version-v0.6.14-blue.svg)](#)
 [![Lizenz](https://img.shields.io/badge/Lizenz-Proprietary%20Freeware-green.svg)](#)
 
 > **OpenRBM** ist eine moderne, offline-fähige Web- und Desktop-App zur vollständigen Ablösung des proprietären Programms **WinRBM 1.32** für Slotcar-Rennbahnen (kompatibel mit der originalen **Bepfe®-Impulselektronik**).
