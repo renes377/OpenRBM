@@ -32,7 +32,7 @@ Die Anwendung kann direkt im Browser gestartet werden – ohne Installation:
 
 ---
 
-## Exklusive Zusatzfunktionen gegenüber WinRBM
+## Zusatzfunktionen gegenüber WinRBM
 
 OpenRBM übernimmt nicht nur alle WinRBM-Funktionen, sondern erweitert sie um zahlreiche moderne Profi-Features für Vereins- und Langstreckenrennen:
 
