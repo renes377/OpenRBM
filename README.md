@@ -21,9 +21,9 @@ Die Anwendung kann direkt im Browser gestartet werden – ohne Installation:
 ## Hauptfunktionen (100% Feature-Parität zu WinRBM 1.32)
 
 - **Hardware-Ansteuerung & Zeitmessung**:
-  - Bis zu 8 Spuren, Zeitmessung mit ms-genauen Hardware-Zeitstempeln (`S<lane><hex>;`).
+  - Bis zu 8 Spuren, Zeitmessung mit ms-genauen Hardware-Zeitstempeln.
   - Direkte serielle Steuerung der Bepfe-Elektronik über die native Browser **Web Serial API** (mit automatischem Reconnect nach F5).
-  - Fahrstrom-Relais-Steuerung (`B0;`..`B8;`) und Ampelphasen (`A0;`..`A5;`).
+  - Fahrstrom-Relais-Steuerung und Ampelphasen.
 - **Klassische Rennmodi**:
   - Freies Training & Zeittraining (Minuten/Sekunden/Runden).
   - Einzelrennen (Runden- und Zeitmodus, Slot-Modus mit Kommarunden, F1-Modus, Volle Distanz).
