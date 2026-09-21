@@ -70,13 +70,5 @@ Dennoch erfolgt die Nutzung, insbesondere die Ansteuerung physischer Bahnstrom-R
 
 ---
 
-## ☕ Projekt unterstützen
-
-OpenRBM ist ein freies Community-Projekt. Wer die Weiterentwicklung und Pflege unterstützen möchte, kann dem Entwickler gerne einen Kaffee spendieren:
-
-👉 [Unterstützung via PayPal (paypal.me/ReneSchildt)](https://paypal.me/ReneSchildt)
-
----
-
 © 2026 Rene Schildt. Alle Rechte vorbehalten.  
 *Bepfe® und WinRBM sind eingetragene bzw. geschützte Bezeichnungen der jeweiligen Rechteinhaber. OpenRBM steht in keiner offiziellen Verbindung zu Bepfe-Elektronik.*
